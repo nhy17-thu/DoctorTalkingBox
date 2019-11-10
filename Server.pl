@@ -33,23 +33,23 @@ render_question_page:-
 	human_symptom(Question, HumanQuestion),			% get next question
 	% define returned HTML page
 	reply_html_page(
-	   [title('Sympathetic Doctor Talking Box--Diagnosing...')],
-	   [center(h1('Sympathetic Doctor Talking Box')),
-	   center([
-			img([src='static/doctor.jpg'], []),br([]),
-			'*',HumanGesture,'*',br([]),
-			Opening, QuentionStart, HumanQuestion,'?',
-			br([]),
+		[title('Sympathetic Doctor Talking Box--Diagnosing...')],
+		[center(h1('Sympathetic Doctor Talking Box')),
+		center(img(src='static/doctor.jpg')),
+		center(p(['*', HumanGesture, '*'])),
+		center(p([Opening, QuentionStart, HumanQuestion,'?'])),
+		center(
 			form([action='/', method='post'],
 				[
-				input([type='radio', id='yes', name='answer', value='yes', checked], []),
+				input([type='hidden', name='question', value=Question],[]),
+				input([type='radio', id='yes', name='answer', value='yes', checked],[]),
 				label([for='yes'], ['yes']),
-				input([type='radio', id='no', name='answer', value='no'], []),
+				input([type='radio', id='no', name='answer', value='no'],[]),
 				label([for='no'], ['no']),
 				button([type='submit'],['Submit'])
 				])
-		])]
-		).
+		)]
+	).
 
 % reply the clint diagnose result page
 render_diagnose_page:-
@@ -62,19 +62,17 @@ render_diagnose_page:-
 	reply_html_page(
 	   [title('Sympathetic Doctor Talking Box--Diagnosed!!!')],
 	   [center(h1('Sympathetic Doctor Talking Box')),
-		center([
-			img([src='static/doctor.jpg', width=128], []),br([]),
-			'*',HumanGesture,'*',br([]),
-			Opening,'You might have ', Human_result
-		]),
-		center('To start over, please restart the server.')]
-		).
+		center(img(src='static/doctor.jpg')),
+		center(p(['*',HumanGesture,'*'])),
+		center(p([Opening,'You might have ', Human_result])),
+		center('If you\'d like to try again, please restart the server.')]
+	).
 
 % handling answers and following questions.
 web_doctor(Request):-
 	member(method(post), Request), !,
-	http_read_data(Request, [question=Q, answer=A|_], []),
-	answer(Q,A),
+	http_read_data(Request, [question=Question, answer=Answer|_], []),
+	answer(Question,Answer),
 	(current_predicate(diagnose_ready/1) -> render_diagnose_page; render_question_page).
 
 % handling the first request
