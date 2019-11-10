@@ -26,26 +26,25 @@ server(Port) :-
 % reply the clint next question page.
 render_question_page:-
 	gesture(Gesture),
-	human_gesture(Gesture, Human_gesture),      % get Gesture
-	opening(OP),                                % get Opening
-	question_start(QS),                         % get question start
+	human_gesture(Gesture, HumanGesture),			% get Gesture
+	opening(Opening),								% get Opening
+	question_start(QuentionStart),					% get question start
 	nextQuestion(Question),
-	human_symptom(Question, Human_question),    % get next question
+	human_symptom(Question, HumanQuestion),			% get next question
 	% define returned HTML page
 	reply_html_page(
-	   [title('Professional Talking Box Doctor')],
-	   [center([style='font-size: 36pt', title='tooltip text'],'Professional Talking Box Doctor'),
+	   [title('Sympathetic Doctor Talking Box--Diagnosing...')],
+	   [center(h1('Sympathetic Doctor Talking Box')),
 	   center([
-			img([src='/static/doctor.jpg', width=128], []),br([]),
-			'<    ',Human_gesture,'    >',br([]),
-			OP,QS, Human_question,'?',
+			img([src='static/doctor.jpg'], []),br([]),
+			'*',HumanGesture,'*',br([]),
+			Opening, QuentionStart, HumanQuestion,'?',
 			br([]),
 			form([action='/', method='post'],
 				[
-				input([type='hidden', name='question', value=Question],[]),
-				input([type='radio', id='yes', name='answer', value='yes'],[]),
+				input([type='radio', id='yes', name='answer', value='yes', checked], []),
 				label([for='yes'], ['yes']),
-				input([type='radio', id='no', name='answer', value='no', checked],[]),
+				input([type='radio', id='no', name='answer', value='no'], []),
 				label([for='no'], ['no']),
 				button([type='submit'],['Submit'])
 				])
@@ -55,18 +54,18 @@ render_question_page:-
 % reply the clint diagnose result page
 render_diagnose_page:-
 	gesture(Gesture),
-	human_gesture(Gesture, Human_gesture),		% get gesture
-	opening(OP),                            	% get opening
+	human_gesture(Gesture, HumanGesture),		% get gesture
+	opening(Opening),							% get opening
 	diagnose(Result),
-	human_diagnose(Result, Human_result),		% get diagnose result
+	human_diagnose(Result, Human_result),		% get diagnosis
 	% define returned HTML page
 	reply_html_page(
-	   [title('Professional Talking Box Doctor')],
-	   [center([style='font-size: 36pt', title='tooltip text'],'Professional Talking Box Doctor'),
+	   [title('Sympathetic Doctor Talking Box--Diagnosed!!!')],
+	   [center(h1('Sympathetic Doctor Talking Box')),
 		center([
-			img([src='img/doctor.jpg', width=128], []),br([]),
-			'<    ',Human_gesture,'    >',br([]),
-			OP,'You might have ', Human_result
+			img([src='static/doctor.jpg', width=128], []),br([]),
+			'*',HumanGesture,'*',br([]),
+			Opening,'You might have ', Human_result
 		]),
 		center('To start over, please restart the server.')]
 		).
@@ -79,7 +78,7 @@ web_doctor(Request):-
 	(current_predicate(diagnose_ready/1) -> render_diagnose_page; render_question_page).
 
 % handling the first request
-web_doctor(_Request) :-
+web_doctor(_Request):-
 	(current_predicate(diagnose_ready/1) -> render_diagnose_page; render_question_page).
 
 % start the server
