@@ -2,7 +2,6 @@
 
 :-debug.
 :-['DoctorLogic.pl'].
-:-['HumanizedOutput.pl'].
 :-use_module(library(http/thread_httpd)).
 :-use_module(library(http/http_dispatch)).
 :-use_module(library(http/html_write)).
@@ -10,7 +9,7 @@
 :-use_module(library(http/http_client)).
 :-use_module(library(http/http_error)).
 
-% rule for ststic files handler
+% rules for static files handler
 :- multifile http:location/3.
 :- dynamic   http:location/3.
 http:location(files, '/static', []).
@@ -70,7 +69,7 @@ render_diagnose_page:-
 
 % handling answers and following questions.
 web_doctor(Request):-
-	member(method(post), Request), !,
+	member(method(post), Request), !,			% post means the user has submitted answer
 	http_read_data(Request, [question=Question, answer=Answer|_], []),
 	answer(Question,Answer),
 	(current_predicate(diagnose_ready/1) -> render_diagnose_page; render_question_page).

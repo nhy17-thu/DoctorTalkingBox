@@ -6,6 +6,7 @@
 
 % Including core logic & translation codes
 :-['DoctorLogic.pl'].
+:-['HumanizedOutput.pl'].
 
 ask_question:-
 	gesture(Gesture),
