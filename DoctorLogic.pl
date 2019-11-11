@@ -12,8 +12,8 @@ symptom_library([temperature, sweat, ache, sneeze, cough, blood, breathe_rapidly
 % List of illness and its library of symptoms
 illness(fever,  [temperature, sweat, ache, weepy, headache]).
 illness(cold,   [sneeze, cough, temperature, mild_pain, malaise]).
-illness(injury, [blood, unbearable_pain, weepy, angry, bruise]).
-illness(cancer, [blood, manageable_pain, temperature, sweat, ache]).
+illness(injury, [blood, unbearable_pain, ache, angry, bruise]).
+illness(cancer, [blood, manageable_pain, temperature, sweat, ache, malaise]).
 illness(anxiety_disorder, [anxious, sweat, lot_of_pain, breathe_rapidly, headache]).
 
 % Library of gestures
@@ -71,6 +71,10 @@ nextQuestion(Next):-
 	library_finished(Mood_library, _, If_mood_finished),   % check if all items in Mood_library has been answered 
 	library_finished(Symptom_library, AvailableChoices, _),    
 	(
+		/*
+		 * here we assume that patients can have only one kind of pain level and mood at a time
+		 * but can have many different sympotms
+		 */
 		(current_predicate(pain/1); If_pain_finished),   % or at least one in the Pain_library is answered positively
 		(current_predicate(mood/1); If_mood_finished)    % or at least one in the Mood_library is answered positively
 	),!,
@@ -117,12 +121,12 @@ answer(Question, Answer):-
 	).
 
 % having a certain illness means having all its symptoms
-diagnose_iterator(X):-
-	findall(A, symptom_positive(A), Symptom_list),
-	illness(X, L), 
-	is_subset(L, Symptom_list).
+diagnose_iterator(Illness):-
+	findall(Sympotms, symptom_positive(Sympotms), PositiveSymptoms),
+	illness(Illness, SymptomList), 
+	is_subset(SymptomList, PositiveSymptoms).
 
 % find all possible illnesses based on positive answers
-diagnose(L):-
-	findall(A, diagnose_iterator(A), L).
+diagnose(List):-
+	findall(Illness, diagnose_iterator(Illness), List).
 

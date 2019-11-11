@@ -64,8 +64,8 @@ render_diagnose_page:-
 	   [center(h1('Sympathetic Doctor Talking Box')),
 		center(img(src='static/doctor.jpg')),
 		center(p(['*',HumanGesture,'*'])),
-		center(p([Opening,'You might have ', Human_result])),
-		center('If you\'d like to try again, please restart the server.')]
+		center(p([Opening,'you might have ', Human_result])),
+		center(p('If you\'d like to try again, please restart the server.'))]
 	).
 
 % handling answers and following questions.

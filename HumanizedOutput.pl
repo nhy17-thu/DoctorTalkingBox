@@ -64,7 +64,7 @@ human_diagnose(L, H):-
 		Len==0 -> human_illness(no_illness, H);
 		(
 			convlist([X,Y] >> human_illness(X,Y), L, HL),
-			atomic_list_concat(HL, ',', H)
+			atomic_list_concat(HL, ', or ', H)
 		)
 	).
 
