@@ -1,5 +1,10 @@
-% This file creates a web server based on SWI-Prolog
+/*
+ * Lab Project for CZ3005 Artificial Intelligence @ Nanyang Technological University
+ * Assignment 4: Patient with a sympathetic doctor
+ * Niu Haoyu, N1902565A, Group TSP4
+ */
 
+% This file creates a web server based on SWI-Prolog
 :-debug.
 :-['DoctorLogic.pl'].
 :-use_module(library(http/thread_httpd)).

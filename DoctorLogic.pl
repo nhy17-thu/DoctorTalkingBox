@@ -1,3 +1,9 @@
+/*
+ * Lab Project for CZ3005 Artificial Intelligence @ Nanyang Technological University
+ * Assignment 4: Patient with a sympathetic doctor
+ * Niu Haoyu, N1902565A, Group TSP4
+ */
+ 
 pain.							% store pain level selected by patient
 mood.							% store mood level selected by patient
 diagnose_ready.					% true with all questions asked and answered
