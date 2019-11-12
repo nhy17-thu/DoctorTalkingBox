@@ -12,3 +12,13 @@ And then type
 ```
 ?- start.
 ```
+
+Similarly, if you want to run the web version, type
+
+```
+swipl Server.pl
+```
+
+And then visit [http://localhost:8000/](http://localhost:8000/) to use the AI doctor.
+
+Thanks for using!
